@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46063ad618b248c8e637624a092d292c",
+    "content-hash": "6b84fcaf9ea8e0307005df877f05036a",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -2533,46 +2533,6 @@
                 }
             ],
             "time": "2024-09-21T08:32:55+00:00"
-        },
-        {
-            "name": "m3m0r7/nfc-for-php",
-            "version": "0.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/m3m0r7/nfc-for-php.git",
-                "reference": "fb6fddac067cf6561e42187038fa33c0b3176f2d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/m3m0r7/nfc-for-php/zipball/fb6fddac067cf6561e42187038fa33c0b3176f2d",
-                "reference": "fb6fddac067cf6561e42187038fa33c0b3176f2d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ffi": "*",
-                "php": ">=7.4|>=8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "NFC\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "memory"
-                }
-            ],
-            "description": "NFC Reader with the libnfc written in PHP",
-            "support": {
-                "issues": "https://github.com/m3m0r7/nfc-for-php/issues",
-                "source": "https://github.com/m3m0r7/nfc-for-php/tree/0.0.2"
-            },
-            "time": "2021-10-09T09:10:01+00:00"
         },
         {
             "name": "mongodb/laravel-mongodb",
@@ -10079,7 +10039,7 @@
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "8.2.0"
+        "php": "8.4.99"
     },
     "plugin-api-version": "2.6.0"
 }
