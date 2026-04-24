@@ -42,7 +42,8 @@ class MenuController extends Controller
             $q->select('um.menufk')
                 ->from('user_menu as um')
                 ->join('loginuser_m as lu', 'lu.id', '=', 'um.loginuserfk')
-                ->where('lu.objectpegawaifk', $pegawaiId)
+                // ->where('lu.objectpegawaifk', $pegawaiId)
+                ->where('lu.objectpegawaifk', (int)$pegawaiId)
                 ->where('um.statusenabled', true);
         })->get();
 
