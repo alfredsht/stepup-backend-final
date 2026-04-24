@@ -75,10 +75,10 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'prepared_statements' => false,
             'sslmode' => 'prefer',
             'options' => [
-                '--endpoint=ep-icy-sunset-aods4djb'
+                // Hapus atau timpa yang lama dengan ini:
+                PDO::ATTR_EMULATE_PREPARES => true,
             ],
         ],
 
