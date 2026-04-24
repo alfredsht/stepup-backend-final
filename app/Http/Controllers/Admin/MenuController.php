@@ -44,7 +44,7 @@ class MenuController extends Controller
                 ->join('loginuser_m as lu', 'lu.id', '=', 'um.loginuserfk')
                 // ->where('lu.objectpegawaifk', $pegawaiId)
                 ->where('lu.objectpegawaifk', (int)$pegawaiId)
-                ->where('um.statusenabled', true);
+                ->whereRaw('um.statusenabled IS TRUE');
         })->get();
 
         if ($menusUser->isEmpty() && isset($user->pegawai->objectjenispegawaifk)) {
@@ -52,7 +52,7 @@ class MenuController extends Controller
                 $q->select('menufk')
                     ->from('role_menu')
                     ->where('jenispegawaifk', $user->pegawai->objectjenispegawaifk)
-                    ->where('statusenabled', true);
+                    ->whereRaw('statusenabled IS TRUE');
             })->get();
         }
 
