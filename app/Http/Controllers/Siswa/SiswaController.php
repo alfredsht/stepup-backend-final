@@ -230,7 +230,7 @@ class SiswaController extends Controller
             $studentId = DB::table('students_m')->insert([
                 'nis' => $validatedData['nis'],
                 'nisn' => $request['nisn'],
-                'kdprofile' => 10,
+                'kdprofile' => '10',
                 'statusenabled' => true,
                 'namalengkap' => $request['namalengkap'],
                 'tanggal_lahir' => $request['tanggal_lahir'],
@@ -292,7 +292,7 @@ class SiswaController extends Controller
             $updateData = [
                 'nis' => $request['nis'],
                 'nisn' => $request['nisn'],
-                'kdprofile' => 10,
+                'kdprofile' => '10',
                 'statusenabled' => true,
                 'namalengkap' => $request['namalengkap'],
                 'tanggal_lahir' => $request['tanggal_lahir'],

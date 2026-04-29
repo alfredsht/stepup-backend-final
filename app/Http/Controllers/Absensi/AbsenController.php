@@ -43,7 +43,7 @@ class AbsenController extends Controller
                 $inserted = DB::table('absensi_m')->insert([
                     'objectsiswafk' => $student->nis,
                     'waktu_tap_in' => $waktuSekarang,
-                    'kdprofile' => 10,
+                    'kdprofile' => '10',
                     'statusenabled' => true,
                     'status' => $status,
                     'status_tap' => true,
@@ -230,7 +230,7 @@ class AbsenController extends Controller
                         $insertData[] = [
                             'objectsiswafk' => $student->nis,
                             'waktu_tap_in' => $tanggal->copy(),
-                            'kdprofile' => 10,
+                            'kdprofile' => '10',
                             'statusenabled' => true,
                             'status' => $statusbaru,
                             'status_tap' => true,
@@ -401,7 +401,7 @@ class AbsenController extends Controller
                 $studentId = DB::table('mapjadwaltoguru_t')->insert([
                     'id' => $randomId,
                     'statusenabled' => true,
-                    'kdprofile' => 10,
+                    'kdprofile' => '10',
                     'objectgurufk' => $request['objectgurufk'],
                     'tanggal_belajar' => $date,
                     'tanggal_input' => $tglAyeuna,

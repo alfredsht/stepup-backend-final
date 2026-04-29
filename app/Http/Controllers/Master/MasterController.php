@@ -403,7 +403,7 @@ class MasterController extends Controller
         ]);
         try {
             $postMapel = DB::table('mapel_m')->insert([
-                'statusenabled' => $validated['status'] === 'aktif' ? 1 : 0,
+                'statusenabled' => $validated['status'] === 'aktif',
                 'kdprofile' => $kdprofile,
                 'kode_mapel' => $validated['kode_mapel'],
                 'nama_mapel' => $validated['nama_mapel'],
@@ -453,7 +453,7 @@ class MasterController extends Controller
 
         if ($request->has('deleted') && $request->input('deleted') === true) {
             $updateData['deleted_at'] = $this->now();
-            $updateData['statusenabled'] = 0;
+            $updateData['statusenabled'] = false;
         } else {
 
             $rules = [
@@ -471,7 +471,7 @@ class MasterController extends Controller
             $validated = $request->validate($rules);
 
             $updateData = [
-                'statusenabled' => $validated['status'] === 'aktif' ? 1 : 0,
+                'statusenabled' => $validated['status'] === 'aktif',
                 'kode_mapel' => $validated['kode_mapel'],
                 'nama_mapel' => $validated['nama_mapel'],
                 'deskripsi' => $validated['deskripsi'] ?? null,
