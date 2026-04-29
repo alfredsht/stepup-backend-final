@@ -13,7 +13,7 @@ class MenuController extends Controller
     public function indexMenus()
     {
         $menus = MappingMenu::whereRaw('statusenabled IS TRUE')
-            ->where('kdprofile', 10)
+            ->where('kdprofile', '10')
             ->whereNull('parent_id')
             ->with(['children' => function ($q) {
                 $q->whereRaw('statusenabled IS TRUE')->orderBy('urutan');
@@ -148,8 +148,7 @@ class MenuController extends Controller
 
         DB::beginTransaction();
         try {
-            $kdProfile = 10;
-
+             $kdprofile = '10';
             if ($validated['type'] === 'user') {
 
                 $pegawai = DB::table('pegawai_m')
@@ -485,3 +484,6 @@ class MenuController extends Controller
         ]);
     }
 }
+
+
+

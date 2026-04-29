@@ -62,8 +62,8 @@ class SiswaController extends Controller
                     'st.pekerjaanayahfk',
                     'st.pekerjaanibufk'
                 )
-                ->where('st.kdprofile', 10)
-                ->where('st.statusenabled', true)
+                ->where('st.kdprofile', '10')
+                ->whereRaw('st.statusenabled IS TRUE')
                 ->orderBy('st.namalengkap', 'ASC')
                 ->get();
 
@@ -110,8 +110,8 @@ class SiswaController extends Controller
                 )
                 ->where('st.kelasfk', $request['idkelas'])
                 ->whereNull('ab.objectsiswafk')
-                ->where('st.kdprofile', 10)
-                ->where('st.statusenabled', true)
+                ->where('st.kdprofile', '10')
+                ->whereRaw('st.statusenabled IS TRUE')
                 ->orderBy('st.nis', 'ASC')
                 ->orderBy('st.namalengkap', 'ASC')
                 ->get();
@@ -172,8 +172,8 @@ class SiswaController extends Controller
                     'st.pekerjaanibufk'
                 )
                 ->where('st.nis', $nis)
-                ->where('st.kdprofile', 10)
-                ->where('st.statusenabled', true);
+                ->where('st.kdprofile', '10')
+                ->whereRaw('st.statusenabled IS TRUE');
 
             $data = $data->orderBy('st.namalengkap', 'ASC');
             $data = $data->first();
@@ -442,8 +442,8 @@ class SiswaController extends Controller
                     'st.pekerjaanibufk',
                     'ts.saldo'
                 )
-                ->where('st.kdprofile', 10)
-                ->where('st.statusenabled', true)
+                ->where('st.kdprofile', '10')
+                ->whereRaw('st.statusenabled IS TRUE')
                 ->where(function ($query) use ($request) {
                     if (!empty($request['nis']) && !empty($request['nama']) && !empty($request['kelas'])) {
 
@@ -514,7 +514,7 @@ class SiswaController extends Controller
 
             if (empty($tahunAjaranId)) {
                 $tahunAjaranId = DB::table('tahun_ajaran_m')
-                    ->where('statusenabled', true)
+                    ->whereRaw('statusenabled IS TRUE')
                     ->orderByDesc('id')
                     ->value('id') ?? 1;
             }
@@ -607,7 +607,7 @@ class SiswaController extends Controller
 
         DB::beginTransaction();
         try {
-            $kdprofile = 10;
+             $kdprofile = '10';
             $tabungan = DB::table('tabungan_siswa')
                 ->where('student_id', $studentId)
                 ->first();
@@ -739,3 +739,6 @@ class SiswaController extends Controller
         }
     }
 }
+
+
+

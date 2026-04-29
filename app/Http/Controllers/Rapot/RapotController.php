@@ -27,7 +27,7 @@ class RapotController extends Controller
 
             $tahunAjaran = DB::table('tahun_ajaran_m')
                 ->select($selects)
-                ->where('statusenabled', true)
+                ->whereRaw('statusenabled IS TRUE')
                 ->orderByDesc('id')
                 ->get();
 
@@ -63,7 +63,7 @@ class RapotController extends Controller
                     's.no_handphone'
                 )
                 ->where('s.nis', $nis)
-                ->where('s.statusenabled', true)
+                ->whereRaw('s.statusenabled IS TRUE')
                 ->first();
 
             if (!$siswa) {
@@ -245,7 +245,7 @@ class RapotController extends Controller
         $waliKelas = DB::table('loginuser_m as lu')
             ->join('pegawai_m as pg', 'pg.id', '=', 'lu.objectpegawaifk')
             ->where('lu.id', $loginUserId)
-            ->where('pg.statusenabled', true)
+            ->whereRaw('pg.statusenabled IS TRUE')
             ->where('pg.is_wali_kelas', true)
             ->where('pg.kelas_wali', $kelasId)
             ->exists();
@@ -342,3 +342,4 @@ class RapotController extends Controller
         ];
     }
 }
+

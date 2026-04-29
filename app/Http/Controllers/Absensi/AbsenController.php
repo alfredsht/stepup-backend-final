@@ -128,7 +128,7 @@ class AbsenController extends Controller
                     DB::raw("CASE WHEN ab.waktu_tap_out IS NULL THEN '-' ELSE TO_CHAR(ab.waktu_tap_out, 'YYYY-MM-DD HH24:MI:SS') END AS waktu_tap_out"),
                     DB::raw("case when st.jeniskelaminfk = 1 then 'L' when st.jeniskelaminfk = 2 then 'P' else '-' end as jeniskelamin"),
                 )
-                ->where('st.kdprofile', 10)
+                ->where('st.kdprofile', '10')
                 ->where(function ($query) use ($request) {
                     $query->whereBetween('ab.waktu_tap_in', [$request['tglAwal'], $request['tglAkhir']])
                         ->orWhereNull('ab.waktu_tap_in');
@@ -138,7 +138,7 @@ class AbsenController extends Controller
             if (isset($request['idkelas']) && $request['idkelas'] != "" && $request['idkelas'] != "undefined") {
                 $absensi = $absensi->where('st.kelasfk', $request['idkelas']);
             }
-            $absensi = $absensi->where('st.statusenabled', true)
+            $absensi = $absensi->whereRaw('st.statusenabled IS TRUE')
                 ->orderBy('ab.waktu_tap_in', 'ASC')
                 ->get();
 
@@ -464,11 +464,9 @@ class AbsenController extends Controller
                 DB::raw("COALESCE(TO_CHAR(ab.waktu_tap_in, 'YYYY-MM-DD HH24:MI:SS'), '-') AS waktu_tap"),
                 DB::raw("CASE st.jeniskelaminfk WHEN 1 THEN 'L' WHEN 2 THEN 'P' ELSE '-' END AS jeniskelamin")
             )
-            ->where([
-                ['st.kdprofile', '=', 10],
-                ['st.statusenabled', '=', true],
-                ['st.nis', '=', $nis],
-            ])
+            ->where('st.kdprofile', '10')
+            ->whereRaw('st.statusenabled IS TRUE')
+            ->where('st.nis', $nis)
             ->whereDate('ab.waktu_tap_in', '>=', $startDate);
 
         if ($status) {
@@ -489,7 +487,7 @@ class AbsenController extends Controller
         $waliKelas = DB::table('pegawai_m')
             ->where('kelasfk', $student->kelasfk)
             ->where('is_wali_kelas', true)
-            ->where('statusenabled', true)
+            ->whereRaw('statusenabled IS TRUE')
             ->whereNull('deleted_at')
             ->first();
 
@@ -532,11 +530,9 @@ class AbsenController extends Controller
                     'ab.status',
                     DB::raw("COUNT(*) as total")
                 )
-                ->where([
-                    ['st.kdprofile', '=', 10],
-                    ['st.statusenabled', '=', true],
-                    ['st.nis', '=', $nis],
-                ])
+                ->where('st.kdprofile', '10')
+                ->whereRaw('st.statusenabled IS TRUE')
+                ->where('st.nis', $nis)
                 ->groupBy(DB::raw("TO_CHAR(ab.waktu_tap_in, 'Mon')"), 'ab.status')
                 ->orderBy(DB::raw("MIN(ab.waktu_tap_in)"))
                 ->get();
@@ -552,3 +548,4 @@ class AbsenController extends Controller
         }
     }
 }
+

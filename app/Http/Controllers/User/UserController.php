@@ -51,7 +51,7 @@ class UserController extends Controller
         $pegawaiId = $user->objectpegawaifk;
         $pegawai = DB::table('pegawai_m')
             ->where('id', $pegawaiId)
-            ->where('kdprofile', 10)
+            ->where('kdprofile', '10')
             ->first();
 
         if (!$pegawai) {
@@ -86,7 +86,7 @@ class UserController extends Controller
 
         DB::table('pegawai_m')
             ->where('id', $pegawaiId)
-            ->where('kdprofile', 10)
+            ->where('kdprofile', '10')
             ->update([
                 'namalengkap' => $validated['namalengkap'],
                 'email' => $validated['email'],
@@ -127,7 +127,7 @@ class UserController extends Controller
         $pegawaiId = $user->objectpegawaifk;
         $pegawai = DB::table('pegawai_m')
             ->where('id', $pegawaiId)
-            ->where('kdprofile', 10)
+            ->where('kdprofile', '10')
             ->first();
 
         if (!$pegawai) {
@@ -157,7 +157,7 @@ class UserController extends Controller
 
         DB::table('pegawai_m')
             ->where('id', $pegawaiId)
-            ->where('kdprofile', 10)
+            ->where('kdprofile', '10')
             ->update([
                 'foto' => $fotoPath,
                 'updated_at' => now('Asia/Jakarta'),
@@ -171,3 +171,4 @@ class UserController extends Controller
         ], 200);
     }
 }
+

@@ -25,7 +25,7 @@ class MasterController extends Controller
     }
     public function getDataCombo(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $agama = DB::table('agama_m')
                 ->select('id', 'agama')
@@ -71,7 +71,7 @@ class MasterController extends Controller
                 ->join('kecamatan_m as kc', 'ds.objectkecamatanfk', '=', 'kc.id')
                 ->join('kabupatenkota_m as kab', 'ds.objectkabupatenfk', '=', 'kab.id')
                 ->join('provinsi_m as prov', 'ds.objectprovinsi', '=', 'prov.id')
-                ->where('ds.statusenabled', true)
+                ->whereRaw('ds.statusenabled IS TRUE')
                 ->where('ds.kdprofile', '=', $kdprofile)
                 ->orderBy('ds.desakelurahan');
             $alamat = $alamat->take(20);
@@ -100,7 +100,7 @@ class MasterController extends Controller
 
     public function getDataComboProv(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $provinsi = DB::table('provinsi_m')
                 ->select('id as prov_id', 'provinsi')
@@ -173,7 +173,7 @@ class MasterController extends Controller
 
     public function getDataComboPegawai(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $pegawai = DB::table('pegawai_m')
                 ->select('id', 'namalengkap')
@@ -196,7 +196,7 @@ class MasterController extends Controller
 
     public function getDataRekapTap(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         $request->validate([
             'tglAwal' => 'required|date',
             'tglAkhir' => 'required|date',
@@ -213,7 +213,7 @@ class MasterController extends Controller
                     $join->on('st.nis', '=', 'abs.objectsiswafk')
                         ->where('abs.kdprofile', '=', $kdprofile)
                         ->whereBetween('abs.waktu_tap_in', [$request->tglAwal, $request->tglAkhir])
-                        ->where('abs.statusenabled', true);
+                        ->whereRaw('abs.statusenabled IS TRUE');
                 })
                 ->where('ks.kdprofile', '=', $kdprofile)
                 ->groupBy('ks.kelas')
@@ -243,7 +243,7 @@ class MasterController extends Controller
 
     public function getDataRekapCard(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         $request->validate([
             'tglAwal' => 'required|date',
             'tglAkhir' => 'required|date',
@@ -258,7 +258,7 @@ class MasterController extends Controller
                     DB::raw("CASE WHEN am.waktu_tap_in IS NULL THEN '-' ELSE TO_CHAR(am.waktu_tap_in, 'YYYY-MM-DD HH24:MI:SS') END AS waktu_tap")
                 )
                 ->where('sm.kdprofile', '10')
-                ->where('sm.statusenabled', true)
+                ->whereRaw('sm.statusenabled IS TRUE')
                 ->orderBy('am.waktu_tap_in', 'ASC')
                 ->get();
 
@@ -277,7 +277,7 @@ class MasterController extends Controller
     }
     public function getMapel(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $mapel = DB::table('mapel_m')
                 ->select('id', 'statusenabled', 'nama_mapel', 'kode_mapel', 'nama_singkat', 'deskripsi')
@@ -333,8 +333,8 @@ class MasterController extends Controller
                     ) AS rata_rata_nilai
                     ")
             )
-            ->where('m.statusenabled', true)
-            ->where('m.statusenabled', true)
+            ->whereRaw('m.statusenabled IS TRUE')
+            ->whereRaw('n.statusenabled IS TRUE')
             ->groupBy('m.nama_mapel', 'm.nama_singkat')
             ->orderBy('m.nama_singkat', 'asc')
             ->get();
@@ -367,7 +367,7 @@ class MasterController extends Controller
                     ) AS rata_rata_nilai
                     ")
                 )
-                ->where('m.statusenabled', true)
+                ->whereRaw('pm.statusenabled IS TRUE')
                 ->groupBy('m.nama_mapel', 'm.nama_singkat')
                 ->orderBy('m.nama_singkat', 'asc')
                 ->get();
@@ -393,7 +393,7 @@ class MasterController extends Controller
 
     public function postMataPelajaran(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         $validated = $request->validate([
             'status' => 'required|in:aktif,tidak',
             'kode_mapel' => 'required|string|max:10|unique:mapel_m,kode_mapel',
@@ -438,7 +438,7 @@ class MasterController extends Controller
 
     public function updateMataPelajaran(Request $request, $id)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         $existingMapel = DB::table('mapel_m')
             ->where('kode_mapel', $id)
             ->where('kdprofile', $kdprofile)
@@ -541,7 +541,7 @@ class MasterController extends Controller
     }
     public function getDataPegawai(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $pegawai = DB::table('pegawai_m as pm')
                 ->select(
@@ -576,7 +576,7 @@ class MasterController extends Controller
                 ->leftjoin('statuspegawai_m as sp', 'pm.status_kepegawaian', '=', 'sp.id')
                 ->leftjoin('pendidikan_m as pd', 'pm.objectpendidikanterakhirfk', '=', 'pd.id')
                 ->where('pm.kdprofile', '=', $kdprofile)
-                ->where('pm.statusenabled', '=', true)
+                ->whereRaw('pm.statusenabled IS TRUE')
                 ->get();
 
             $response = [
@@ -594,7 +594,7 @@ class MasterController extends Controller
     }
     public function postDataPegawai(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             DB::table('pegawai_m')->insert([
                 'kdprofile' => $kdprofile,
@@ -637,7 +637,7 @@ class MasterController extends Controller
 
     public function updateDataPegawai(Request $request, $id)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         if ($request->has('status')) {
             $validated = $request->validate([
                 'status' => 'required|in:aktif,tidak',
@@ -862,8 +862,7 @@ class MasterController extends Controller
 
     public function getDataPegawaiById(Request $request, $pegawaiId)
     {
-        $kdprofile = 10;
-
+         $kdprofile = '10';
         try {
             $pegawai = DB::table('pegawai_m as pm')
                 ->select(
@@ -915,8 +914,7 @@ class MasterController extends Controller
     }
     public function getDataComboJenisTransaksi(Request $request)
     {
-        $kdprofile = 10;
-
+         $kdprofile = '10';
         try {
             $transaksi = DB::table('jenis_transaksi_tabungan')
                 ->select('id', 'kode', 'nama')
@@ -995,7 +993,7 @@ class MasterController extends Controller
     }
     public function getDataComboJenisPegawai(Request $request)
     {
-        $kdprofile = 10;
+         $kdprofile = '10';
         try {
             $jenispegawai = DB::table('jenispegawai_m')
                 ->select('id', 'jenispegawai as jenis_pegawai')
@@ -1016,3 +1014,6 @@ class MasterController extends Controller
         }
     }
 }
+
+
+
