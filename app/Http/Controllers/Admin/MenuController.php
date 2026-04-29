@@ -12,11 +12,11 @@ class MenuController extends Controller
 {
     public function indexMenus()
     {
-        $menus = MappingMenu::where('statusenabled', true)
+        $menus = MappingMenu::whereRaw('statusenabled IS TRUE')
             ->where('kdprofile', 10)
             ->whereNull('parent_id')
             ->with(['children' => function ($q) {
-                $q->where('statusenabled', true)->orderBy('urutan');
+                $q->whereRaw('statusenabled IS TRUE')->orderBy('urutan');
             }])
             ->orderBy('urutan')
             ->get();
@@ -61,7 +61,7 @@ class MenuController extends Controller
         $allIds = array_unique(array_merge($allMenuIds, $parentIds));
 
         $menus = MappingMenu::whereIn('id', $allIds)
-            ->where('statusenabled', true)
+            ->whereRaw('statusenabled IS TRUE')
             ->orderBy('urutan')
             ->get();
 
@@ -269,7 +269,7 @@ class MenuController extends Controller
                     ->leftJoin('pegawai_m as p', 'lu.objectpegawaifk', '=', 'p.id')
                     ->join('mapping_menu as mm', 'um.menufk', '=', 'mm.id')
                     ->where('lu.objectpegawaifk', $entityId)
-                    ->where('um.statusenabled', true)
+                    ->whereRaw('um.statusenabled IS TRUE')
                     ->select(
                         'um.kdprofile',
                         'um.statusenabled',
@@ -290,7 +290,7 @@ class MenuController extends Controller
                     ->join('jenispegawai_m as jp', 'rm.jenispegawaifk', '=', 'jp.id')
                     ->join('mapping_menu as mm', 'rm.menufk', '=', 'mm.id')
                     ->where('rm.jenispegawaifk', $entityId)
-                    ->where('rm.statusenabled', true)
+                    ->whereRaw('rm.statusenabled IS TRUE')
                     ->select('rm.id', 'mm.nama_menu', 'jp.id as entity_id', 'jp.jenispegawai')
                     ->get();
 
@@ -375,7 +375,7 @@ class MenuController extends Controller
 
         $children = $menusUser
             ->whereNotNull('parent_id')
-            ->where('statusenabled', true)
+            ->whereRaw('statusenabled IS TRUE')
             ->sortBy('urutan')
             ->map(fn($menu) => [
                 'id' => $menu->id,
@@ -446,7 +446,7 @@ class MenuController extends Controller
             ->join('loginuser_m as lu', 'lu.id', '=', 'um.loginuserfk')
             ->join('mapping_menu as mm', 'mm.id', '=', 'um.menufk')
             ->leftJoin('pegawai_m as pg', 'pg.id', '=', 'lu.objectpegawaifk')
-            ->where('um.statusenabled', true)
+            ->whereRaw('um.statusenabled IS TRUE')
             ->select(
                 'um.id',
                 'pg.id as entity_id',
@@ -463,7 +463,7 @@ class MenuController extends Controller
         $roleMappings = DB::table('role_menu as rm')
             ->join('jenispegawai_m as jp', 'jp.id', '=', 'rm.jenispegawaifk')
             ->join('mapping_menu as mm', 'mm.id', '=', 'rm.menufk')
-            ->where('rm.statusenabled', true)
+            ->whereRaw('rm.statusenabled IS TRUE')
             ->select(
                 'rm.id',
                 'jp.id as entity_id',
