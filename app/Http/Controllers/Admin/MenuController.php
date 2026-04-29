@@ -60,10 +60,21 @@ class MenuController extends Controller
         $parentIds = $this->getParentIdsRecursive($allMenuIds);
         $allIds = array_unique(array_merge($allMenuIds, $parentIds));
 
-        $menus = MappingMenu::whereIn('id', $allIds)
-            ->whereRaw('statusenabled IS TRUE')
-            ->orderBy('urutan')
-            ->get();
+            $menus = collect();
+            if (!empty($allIds)) {
+                $menus = MappingMenu::whereIn('id', $allIds)
+                    ->whereRaw('statusenabled IS TRUE')
+                    ->orderBy('urutan')
+                    ->get();
+            }
+
+            // Fallback: jika user belum punya mapping user/role, tampilkan menu default aktif.
+            if ($menus->isEmpty()) {
+                $menus = MappingMenu::whereRaw('statusenabled IS TRUE')
+                    ->where('kdprofile', '10')
+                    ->orderBy('urutan')
+                    ->get();
+            }
 
         $tree = $this->buildTree($menus);
 
@@ -148,7 +159,7 @@ class MenuController extends Controller
 
         DB::beginTransaction();
         try {
-             $kdprofile = '10';
+            $kdProfile = '10';
             if ($validated['type'] === 'user') {
 
                 $pegawai = DB::table('pegawai_m')
