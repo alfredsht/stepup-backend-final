@@ -52,7 +52,7 @@ class NotificationController extends Controller
                     'np.read_at'
                 )
                 ->where('np.pegawai_id', $pegawaiId)
-                ->where('n.statusenabled', true)
+                ->whereRaw('n.statusenabled IS TRUE')
                 //->whereDate('n.created_at', $this->now())
                 //->where('np.is_read', false)
                 ->orderBy('n.created_at', 'desc')
@@ -73,7 +73,7 @@ class NotificationController extends Controller
     {
         $pegawai = DB::table('pegawai_m')
             ->where('id', $pegawaiId)
-            ->where('statusenabled', true)
+            ->whereRaw('statusenabled IS TRUE')
             ->whereNull('deleted_at')
             ->first();
 
