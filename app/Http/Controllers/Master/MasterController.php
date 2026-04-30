@@ -402,8 +402,9 @@ class MasterController extends Controller
             'nama_singkat' => 'nullable|string|max:50',
         ]);
         try {
+            $statusEnabled = $validated['status'] === 'aktif';
             $postMapel = DB::table('mapel_m')->insert([
-                'statusenabled' => $validated['status'] === 'aktif',
+                'statusenabled' => DB::raw($statusEnabled ? 'true' : 'false'),
                 'kdprofile' => $kdprofile,
                 'kode_mapel' => $validated['kode_mapel'],
                 'nama_mapel' => $validated['nama_mapel'],
@@ -469,9 +470,10 @@ class MasterController extends Controller
                 'nama_singkat' => 'nullable|string|max:50',
             ];
             $validated = $request->validate($rules);
+            $statusEnabled = $validated['status'] === 'aktif';
 
             $updateData = [
-                'statusenabled' => $validated['status'] === 'aktif',
+                'statusenabled' => $statusEnabled,
                 'kode_mapel' => $validated['kode_mapel'],
                 'nama_mapel' => $validated['nama_mapel'],
                 'deskripsi' => $validated['deskripsi'] ?? null,
@@ -481,9 +483,14 @@ class MasterController extends Controller
         }
 
         try {
+            $dbUpdateData = $updateData;
+            if (array_key_exists('statusenabled', $dbUpdateData)) {
+                $dbUpdateData['statusenabled'] = DB::raw($dbUpdateData['statusenabled'] ? 'true' : 'false');
+            }
+
             DB::table('mapel_m')
                 ->where('kode_mapel', $id)
-                ->update($updateData);
+                ->update($dbUpdateData);
 
             $ignoreFields = ['updated_at', 'kdprofile'];
             $fieldLabels = [
