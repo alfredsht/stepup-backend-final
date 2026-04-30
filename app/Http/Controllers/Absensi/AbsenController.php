@@ -44,7 +44,7 @@ class AbsenController extends Controller
                     'objectsiswafk' => $student->nis,
                     'waktu_tap_in' => $waktuSekarang,
                     'kdprofile' => '10',
-                    'statusenabled' => true,
+                    'statusenabled' => DB::raw('true'),
                     'status' => $status,
                     'status_tap' => true,
                     'keterangan' => null,
@@ -231,7 +231,7 @@ class AbsenController extends Controller
                             'objectsiswafk' => $student->nis,
                             'waktu_tap_in' => $tanggal->copy(),
                             'kdprofile' => '10',
-                            'statusenabled' => true,
+                            'statusenabled' => DB::raw('true'),
                             'status' => $statusbaru,
                             'status_tap' => true,
                             'filebukti' => json_encode($filePaths),
@@ -400,7 +400,7 @@ class AbsenController extends Controller
                 $randomId = mt_rand(10001, PHP_INT_MAX);
                 $studentId = DB::table('mapjadwaltoguru_t')->insert([
                     'id' => $randomId,
-                    'statusenabled' => true,
+                    'statusenabled' => DB::raw('true'),
                     'kdprofile' => '10',
                     'objectgurufk' => $request['objectgurufk'],
                     'tanggal_belajar' => $date,
@@ -496,7 +496,7 @@ class AbsenController extends Controller
         }
 
         $notifId = DB::table('notifikasi_m')->insertGetId([
-            'statusenabled' => true,
+            'statusenabled' => DB::raw('true'),
             'kdprofile' => '10',
             'notif_type' => 'absensi',
             'notif_title' => 'Absensi ' . $student->namalengkap,

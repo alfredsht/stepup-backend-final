@@ -231,7 +231,7 @@ class SiswaController extends Controller
                 'nis' => $validatedData['nis'],
                 'nisn' => $request['nisn'],
                 'kdprofile' => '10',
-                'statusenabled' => true,
+                'statusenabled' => DB::raw('true'),
                 'namalengkap' => $request['namalengkap'],
                 'tanggal_lahir' => $request['tanggal_lahir'],
                 'tempat_lahir' => $request['tempat_lahir'],
@@ -293,7 +293,7 @@ class SiswaController extends Controller
                 'nis' => $request['nis'],
                 'nisn' => $request['nisn'],
                 'kdprofile' => '10',
-                'statusenabled' => true,
+                'statusenabled' => DB::raw('true'),
                 'namalengkap' => $request['namalengkap'],
                 'tanggal_lahir' => $request['tanggal_lahir'],
                 'tempat_lahir' => $request['tempat_lahir'],
@@ -386,7 +386,7 @@ class SiswaController extends Controller
             }
 
             DB::table('students_m')->where('nis', $request['nis'])->update([
-                'statusenabled' => false,
+                'statusenabled' => DB::raw('false'),
             ]);
 
             $logDeleteSiswa = [

@@ -187,7 +187,7 @@ class MenuController extends Controller
                 foreach ($validated['menus'] as $menu) {
                     DB::table('user_menu')->insert([
                         'kdprofile' => $kdProfile,
-                        'statusenabled' => true,
+                        'statusenabled' => DB::raw('true'),
                         'loginuserfk' => $loginUserId,
                         'menufk' => $menu['id'],
                         'can_view' => $menu['can_view'] ?? true,
@@ -215,7 +215,7 @@ class MenuController extends Controller
                 foreach ($validated['menus'] as $menu) {
                     DB::table('role_menu')->insert([
                         'kdprofile' => $kdProfile,
-                        'statusenabled' => true,
+                        'statusenabled' => DB::raw('true'),
                         'jenispegawaifk' => $validated['entity_id'],
                         'menufk' => $menu['id'],
                         'can_view' => $menu['can_view'] ?? true,
@@ -425,11 +425,11 @@ class MenuController extends Controller
                 $loginUserIds = DB::table('loginuser_m')->where('objectpegawaifk', $entityId)->pluck('id');
                 $updated = DB::table('user_menu')
                     ->whereIn('loginuserfk', $loginUserIds)
-                    ->update(['statusenabled' => false, 'updated_at' => now()]);
+                    ->update(['statusenabled' => DB::raw('false'), 'updated_at' => now()]);
             } elseif ($type === 'role') {
                 $updated = DB::table('role_menu')
                     ->where('jenispegawaifk', $entityId)
-                    ->update(['statusenabled' => false, 'updated_at' => now()]);
+                    ->update(['statusenabled' => DB::raw('false'), 'updated_at' => now()]);
             }
 
             $logMessage = $pegawai?->namalengkap

@@ -89,7 +89,7 @@ class NotificationController extends Controller
         $notifCreatedAt = now()->format('Y-m-d H:i:s');
 
         $notifId = DB::table('notifikasi_m')->insertGetId([
-            'statusenabled' => true,
+            'statusenabled' => DB::raw('true'),
             'kdprofile'     => '10',
             'notif_type'    => 'tabungan',
             'notif_title'   => $notifTitle,

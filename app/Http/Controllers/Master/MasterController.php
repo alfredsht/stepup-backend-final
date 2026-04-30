@@ -606,7 +606,7 @@ class MasterController extends Controller
             DB::table('pegawai_m')->insert([
                 'kdprofile' => $kdprofile,
                 'is_aktif' => 1,
-                'statusenabled' => true,
+                'statusenabled' => DB::raw('true'),
                 'namalengkap' => $request->input('namalengkap'),
                 'nip' => $request->input('nip'),
                 'nik' => $request->input('nik'),
@@ -699,7 +699,7 @@ class MasterController extends Controller
                     ->where('id', $id)
                     ->where('kdprofile', $kdprofile)
                     ->update([
-                        'statusenabled' => false,
+                        'statusenabled' => DB::raw('false'),
                         'updated_at' => now()
                     ]);
 
