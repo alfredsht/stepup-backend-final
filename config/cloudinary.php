@@ -1,5 +1,14 @@
 <?php
 
+$cloudName = env('CLOUDINARY_CLOUD_NAME');
+$apiKey = env('CLOUDINARY_API_KEY');
+$apiSecret = env('CLOUDINARY_API_SECRET');
+
+$cloudUrl = env('CLOUDINARY_URL');
+if (empty($cloudUrl) && !empty($cloudName) && !empty($apiKey) && !empty($apiSecret)) {
+    $cloudUrl = sprintf('cloudinary://%s:%s@%s', $apiKey, $apiSecret, $cloudName);
+}
+
 /*
  * This file is part of the Laravel Cloudinary package.
  *
@@ -31,7 +40,7 @@ return [
     |
     |
     */
-    'cloud_url' => env('CLOUDINARY_URL'),
+    'cloud_url' => $cloudUrl,
 
     /**
      * Upload Preset From Cloudinary Dashboard
@@ -48,9 +57,9 @@ return [
      */
     'upload_action' => env('CLOUDINARY_UPLOAD_ACTION'),
 
-    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-    'api_key' => env('CLOUDINARY_API_KEY'),
-    'api_secret' => env('CLOUDINARY_API_SECRET'),
+    'cloud_name' => $cloudName,
+    'api_key' => $apiKey,
+    'api_secret' => $apiSecret,
     'secure' => env('CLOUDINARY_SECURE', true),
     'url_cname' => env('CLOUDINARY_URL_CNAME'),
     'base_url' => env('CLOUDINARY_BASE_URL'),

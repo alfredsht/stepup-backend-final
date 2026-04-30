@@ -134,12 +134,26 @@ class UserController extends Controller
             return response()->json(['message' => 'Data pegawai tidak ditemukan'], 404);
         }
 
+        if (empty(config('cloudinary.cloud_url'))) {
+            return response()->json([
+                'message' => 'Konfigurasi Cloudinary belum lengkap di server',
+            ], 500);
+        }
+
         $foto = $request->file('foto');
-        $uploadResult = Cloudinary::uploadFile($foto->getRealPath(), [
-            'folder' => 'foto_pegawai',
-            'public_id' => uniqid('pegawai_profile_')
-        ]);
-        $fotoPath = $uploadResult->getSecurePath();
+
+        try {
+            $uploadResult = Cloudinary::uploadFile($foto->getRealPath(), [
+                'folder' => 'foto_pegawai',
+                'public_id' => uniqid('pegawai_profile_')
+            ]);
+            $fotoPath = $uploadResult->getSecurePath();
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Gagal upload foto ke Cloudinary',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
 
         if (!empty($pegawai->foto)) {
             $parsedUrl = parse_url($pegawai->foto);
@@ -150,7 +164,11 @@ class UserController extends Controller
                 $oldPublicId = pathinfo($publicIdWithExt, PATHINFO_FILENAME);
 
                 if (!empty($oldPublicId)) {
-                    Cloudinary::destroy('foto_pegawai/' . $oldPublicId);
+                    try {
+                        Cloudinary::destroy('foto_pegawai/' . $oldPublicId);
+                    } catch (\Throwable $e) {
+                        // Ignore delete failure because new image upload has succeeded.
+                    }
                 }
             }
         }
