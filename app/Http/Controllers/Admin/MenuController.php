@@ -167,6 +167,9 @@ class MenuController extends Controller
                 $normalized = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
                 return $normalized ?? $default;
             };
+            $toPgBoolRaw = static function ($value, bool $default) use ($toBool) {
+                return DB::raw($toBool($value, $default) ? 'true' : 'false');
+            };
             if ($validated['type'] === 'user') {
 
                 $pegawai = DB::table('pegawai_m')
@@ -197,10 +200,10 @@ class MenuController extends Controller
                         'statusenabled' => DB::raw('true'),
                         'loginuserfk' => $loginUserId,
                         'menufk' => $menu['id'],
-                        'can_view' => $toBool($menu['can_view'] ?? null, true),
-                        'can_add' => $toBool($menu['can_add'] ?? null, false),
-                        'can_edit' => $toBool($menu['can_edit'] ?? null, false),
-                        'can_delete' => $toBool($menu['can_delete'] ?? null, false),
+                        'can_view' => $toPgBoolRaw($menu['can_view'] ?? null, true),
+                        'can_add' => $toPgBoolRaw($menu['can_add'] ?? null, false),
+                        'can_edit' => $toPgBoolRaw($menu['can_edit'] ?? null, false),
+                        'can_delete' => $toPgBoolRaw($menu['can_delete'] ?? null, false),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
@@ -225,10 +228,10 @@ class MenuController extends Controller
                         'statusenabled' => DB::raw('true'),
                         'jenispegawaifk' => $validated['entity_id'],
                         'menufk' => $menu['id'],
-                        'can_view' => $toBool($menu['can_view'] ?? null, true),
-                        'can_add' => $toBool($menu['can_add'] ?? null, false),
-                        'can_edit' => $toBool($menu['can_edit'] ?? null, false),
-                        'can_delete' => $toBool($menu['can_delete'] ?? null, false),
+                        'can_view' => $toPgBoolRaw($menu['can_view'] ?? null, true),
+                        'can_add' => $toPgBoolRaw($menu['can_add'] ?? null, false),
+                        'can_edit' => $toPgBoolRaw($menu['can_edit'] ?? null, false),
+                        'can_delete' => $toPgBoolRaw($menu['can_delete'] ?? null, false),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
