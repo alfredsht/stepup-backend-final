@@ -753,6 +753,9 @@ class MasterController extends Controller
 
                 $existingPegawai = DB::table('pegawai_m')->where('id', $id)->first();
 
+                // Default: pertahankan foto lama bila tidak ada upload baru
+                $fotoPath = $existingPegawai->foto ?? null;
+
                 if ($request->hasFile('foto')) {
                     $foto = $request->file('foto');
 
@@ -774,19 +777,6 @@ class MasterController extends Controller
 
                         Cloudinary::destroy('foto_pegawai/' . $oldPublicId);
                     }
-                } elseif (empty($request->input('foto'))) {
-                    if (!empty($existingPegawai->foto)) {
-                        $parsedUrl = parse_url($existingPegawai->foto);
-                        $pathParts = explode('/', ltrim($parsedUrl['path'], '/'));
-                        $publicIdWithExt = end($pathParts);
-                        $publicId = pathinfo($publicIdWithExt, PATHINFO_FILENAME);
-
-                        Cloudinary::destroy('foto_pegawai/' . $publicId);
-                    }
-
-                    $fotoPath = null;
-                } else {
-                    $fotoPath = $existingPegawai->foto ?? null;
                 }
 
                 $updateData = [
@@ -806,7 +796,8 @@ class MasterController extends Controller
                     'tmt_pengangkatan' => $validated['tmt_pengangkatan'] ?? null,
                     'tmt_jabatan' => $validated['tmt_jabatan'] ?? null,
                     'kelasfk' => $validated['kelas'] ?? 1,
-                    'kelas_wali' => $validated['kelas_wali'],
+                    // Jangan timpa nilai lama kalau front kirim null/tidak kirim field
+                    'kelas_wali' => $validated['kelas_wali'] ?? $existingPegawai->kelas_wali,
                     'status_kepegawaian' => $validated['status_kepegawaian'] ?? null,
                     'foto' => $fotoPath,
                     'updated_at' => now(),
