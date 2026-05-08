@@ -605,7 +605,7 @@ class MasterController extends Controller
         try {
             DB::table('pegawai_m')->insert([
                 'kdprofile' => $kdprofile,
-                'is_aktif' => 1,
+                'is_aktif' => true,
                 'statusenabled' => DB::raw('true'),
                 'namalengkap' => $request->input('namalengkap'),
                 'nip' => $request->input('nip'),
@@ -661,7 +661,7 @@ class MasterController extends Controller
                 }
 
                 $updateData = [
-                    'is_aktif' => $validated['status'] === 'aktif' ? 1 : 0,
+                    'is_aktif' => $validated['status'] === 'aktif',
                     'updated_at' => now(),
                 ];
 
